@@ -39,69 +39,43 @@ if (!$transaction) {
     die("Transaksi tidak ditemukan.");
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="id">
+    <!DOCTYPE html>
+<html lang="id"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boarding Pass</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
-        @media print {
-            .no-print { display: none; }
+    @media print {
+        .no-print { display: none; }
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-        .ticket {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            border: 2px solid #1E3A8A;
-            background-color: white;
-        }
-        .ticket::before, .ticket::after {
-            content: "";
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-        }
-        .ticket::before {
-            top: 50%;
-            left: -20px;
-            transform: translateY(-50%);
-            box-shadow: -5px 0px 0px #1E3A8A;
-        }
-        .ticket::after {
-            top: 50%;
-            right: -20px;
-            transform: translateY(-50%);
-            box-shadow: 5px 0px 0px #1E3A8A;
-        }
-        .divider {
-            width: 2px;
-            background: repeating-linear-gradient(
-                to bottom,
-                black,
-                black 5px,
-                transparent 5px,
-                transparent 10px
-            );
-            height: 100%;
-        }
+    }
     </style>
 </head>
 <body class="flex flex-col justify-center items-center min-h-screen bg-gray-100 p-6">
+    
+    <!-- Container Tiket -->
+    <div id="ticket" class="bg-white w-full max-w-2xl rounded-xl shadow-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-blue-400 text-white p-4 flex justify-between items-center">
+            <h2 class="text-3xl font-serif familly font-extrabold text-white">AVIATICA</h2>
+            <i class="bi bi-airplane-engines-fill text-4xl"></i>
+        </div>
 
-    <div class="bg-white w-full max-w-2xl rounded-xl shadow-lg p-6 relative ticket">
-            <div class="flex-1 p-3">
+        <div class="flex border-t border-dashed border-gray-400">
+            <!-- Bagian Kiri -->
+            <div class="flex-1 p-4">
                 <div class="flex items-center justify-between border-b pb-2">
                     <img src="assets/images/<?= $transaction['logo_maskapai']; ?>" 
                         alt="<?= $transaction['nama_maskapai']; ?>" class="w-16 h-auto">
                     <div class="text-right">
-                        <h2 class="text-lg font-bold text-blue-600">AVIATICA</h2>
+                        <h2 class="text-2xl font-bold text-gray-700"><?= $_SESSION['nama_lengkap']; ?></h2>
                         <p class="text-gray-500 text-sm">First Class</p>
                     </div>
                 </div>
@@ -118,9 +92,10 @@ if (!$transaction) {
                 </div>
             </div>
             
-            <div class="divider"></div>
+            <div class="border-dashed border-gray-400 border-l-2 min-h-[200px]"></div>
             
-            <div class="w-full md:w-1/3 p-3 text-gray-700 text-center">
+            <!-- Bagian Kanan -->
+            <div class="w-full md:w-1/3 p-4 text-gray-700 text-center">
                 <h2 class="text-md font-bold text-gray-700">BOARDING PASS</h2>
                 <div class="mt-1 text-sm">
                     <p><strong>ID Order:</strong> <?= $transaction['id_order']; ?></p>
@@ -135,11 +110,33 @@ if (!$transaction) {
         </div>
     </div>
     
-    <div class="mt-6">
+    <!-- Tombol Cetak & Simpan -->
+    <div class="mt-6 flex space-x-4">
         <button onclick="window.print()" 
                 class="no-print px-6 py-3 bg-blue-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-600">
             Cetak Tiket
         </button>
+
+        <button onclick="downloadTicket()" 
+                class="no-print px-6 py-3 bg-green-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-600">
+            Simpan sebagai Gambar
+        </button>
     </div>
+
+
+    <!-- Script untuk Menyimpan sebagai Gambar -->
+    <script>
+        function downloadTicket() {
+            const ticketElement = document.getElementById("ticket");
+
+            html2canvas(ticketElement, { scale: 2 }).then(canvas => {
+                let link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "boarding-pass.png";
+                link.click();
+            });
+        }
+    </script>
+
 </body>
 </html>
