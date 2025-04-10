@@ -35,7 +35,7 @@ require 'functions.php';
         <!-- Authentication -->
         <div class="hidden md:flex md:items-center">
           <?php if(isset($_SESSION['username'])) : ?>
-            <span class="text-gray-600 mr-4">Halo, selamat datang <?= $_SESSION['nama_lengkap']; ?></span>
+            <span class="text-gray-600 mr-4">Halo, selamat datang <?= $_SESSION['username']; ?></span>
             <a href="logout.php" class="px-3 py-2 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600">Logout</a>
           <?php else : ?>
             <a href="auth/login/" class="px-3 py-2 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 mr-2">Login</a>

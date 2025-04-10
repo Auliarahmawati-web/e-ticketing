@@ -75,7 +75,7 @@ if (!$transaction) {
                     <img src="assets/images/<?= $transaction['logo_maskapai']; ?>" 
                         alt="<?= $transaction['nama_maskapai']; ?>" class="w-16 h-auto">
                     <div class="text-right">
-                        <h2 class="text-2xl font-bold text-gray-700"><?= $_SESSION['nama_lengkap']; ?></h2>
+                        <h2 class="text-2xl font-bold text-gray-700"><?= $_SESSION['username']; ?></h2>
                         <p class="text-gray-500 text-sm">First Class</p>
                     </div>
                 </div>

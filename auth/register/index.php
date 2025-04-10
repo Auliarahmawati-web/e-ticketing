@@ -11,11 +11,11 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
         <h3 class="text-blue-600 font-bold text-2xl">Aviatica</h3>
         <h4 class="text-gray-700 text-lg mb-4">Register an Account</h4>
-        <form action="process.php" method="POST" class="text-left">
-            <label for="nama_lengkap" class="block text-gray-600">Full Name</label>
+        <form action="process.php" method="POST" class="text-left" onsubmit="return validateForm()">
+            <label for="email" class="block text-gray-600">Email</label>
             <div class="flex items-center border rounded-lg px-3 py-2 mb-3">
                 <i class="bi bi-person-circle text-gray-500"></i>
-                <input type="text" name="nama_lengkap" id="nama_lengkap" class="w-full ml-2 outline-none" required>
+                <input type="text" name="email" id="email" class="w-full ml-2 outline-none" required>
             </div>
             
             <label for="username" class="block text-gray-600">Username</label>
@@ -25,20 +25,17 @@
             </div>
             
             <label for="password" class="block text-gray-600">Password</label>
-            <div class="flex items-center border rounded-lg px-3 py-2 mb-3">
+            <div class="flex items-center border rounded-lg px-3 py-2 mb-3 relative">
                 <i class="bi bi-key text-gray-500"></i>
                 <input type="password" name="password" id="password" class="w-full ml-2 outline-none" required>
+                <i class="bi bi-eye-slash text-gray-500 cursor-pointer ml-2 absolute right-3" id="togglePassword" onclick="togglePassword()"></i>
             </div>
-            
-            <label for="roles" class="block text-gray-600">Role</label>
-            <div class="flex items-center border rounded-lg px-3 py-2 mb-3">
-                <i class="bi bi-person-badge text-gray-500"></i>
-                <select name="roles" id="roles" class="w-full ml-2 outline-none bg-transparent" required>
-                    <option value="Penumpang">Penumpang</option>
-                    <option value="Petugas">Petugas</option>
-                    <option value="Admin">Admin</option>
-                </select>
-            </div>
+            <p id="passwordError" class="text-red-600 text-sm hidden">Password harus minimal 5 karakter!</p>
+
+    
+            <!-- Hidden input untuk mengirimkan nilai roles ke backend -->
+            <input type="hidden" name="roles" value="penumpang">
+
             
             <button type="submit" name="register" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
                 <i class="bi bi-box-arrow-in-right"></i> Register
@@ -49,5 +46,37 @@
             <p class="text-gray-600">Sudah punya akun? <a href="../login/index.php" class="text-blue-600 hover:underline">Login di sini</a></p>
         </div>
     </div>
+
+    <script>
+        // Fungsi untuk validasi password minimal 5 karakter
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var passwordError = document.getElementById("passwordError");
+
+            if (password.length < 5) {
+                passwordError.classList.remove("hidden"); // Menampilkan pesan error
+                return false; // Mencegah form dikirim
+            } else {
+                passwordError.classList.add("hidden");
+                return true;
+            }
+        }
+
+        // Fungsi untuk menampilkan atau menyembunyikan password
+        function togglePassword() {
+            var passwordInput = document.getElementById("password");
+            var toggleIcon = document.getElementById("togglePassword");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text"; // Tampilkan password
+                toggleIcon.classList.remove("bi-eye-slash");
+                toggleIcon.classList.add("bi-eye");
+            } else {
+                passwordInput.type = "password"; // Sembunyikan password
+                toggleIcon.classList.remove("bi-eye");
+                toggleIcon.classList.add("bi-eye-slash");
+            }
+        }
+    </script>
 </body>
 </html>

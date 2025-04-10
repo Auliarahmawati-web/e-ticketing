@@ -22,7 +22,7 @@ ORDER BY tanggal_pergi, waktu_berangkat");
 <?php require '../../layouts/sidebar_admin.php'; ?>
 
 <div class="p-6 bg-white lg:ml-64 overflow-x-auto">
-    <h1 class="text-2xl font-bold mb-4">Halo, <?= $_SESSION["nama_lengkap"]; ?></h1>
+    <h1 class="text-2xl font-bold mb-4">Halo, <?= $_SESSION["email"]; ?></h1>
     <h2 class="text-xl font-semibold mb-6">Halaman Jadwal Penerbangan</h2>
 
     <div class="flex items-center justify-between">
@@ -78,4 +78,7 @@ ORDER BY tanggal_pergi, waktu_berangkat");
             </tbody>
         </table>
     </div>
+</div>
+
+<?php require '../../layouts/footer2.php'; ?>
 </div>

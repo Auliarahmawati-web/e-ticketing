@@ -30,7 +30,7 @@ if (file_exists('../../layouts/sidebar_admin.php')) {
 ?>
 
 <div class="p-6 bg-white lg:ml-64 overflow-x-auto">
-    <h1 class="text-2xl font-bold mb-4">Halo, <?= htmlspecialchars($_SESSION["nama_lengkap"]); ?></h1>
+    <h1 class="text-2xl font-bold mb-4">Halo, <?= htmlspecialchars($_SESSION["email"]); ?></h1>
     <h2 class="text-xl font-semibold mb-6">Halaman Pengguna</h2>
 
     <div class="flex mb-4">
@@ -47,7 +47,7 @@ if (file_exists('../../layouts/sidebar_admin.php')) {
                 <tr>
                     <th class="px-6 py-3">No</th>
                     <th class="px-6 py-3">Username</th>
-                    <th class="px-6 py-3">Nama Lengkap</th>
+                    <th class="px-6 py-3">Email</th>
                     <th class="px-6 py-3">Roles</th>
                     <th class="px-6 py-3">Aksi</th>
                 </tr>
@@ -59,7 +59,7 @@ if (file_exists('../../layouts/sidebar_admin.php')) {
                         <tr class="hover:bg-gray-100 text-sm">
                             <td class="px-6 py-4 text-gray-700 text-center"> <?= $no++; ?> </td>
                             <td class="px-6 py-4 text-gray-700 font-medium"> <?= htmlspecialchars($data["username"]); ?> </td>
-                            <td class="px-6 py-4 text-gray-700"> <?= htmlspecialchars($data["nama_lengkap"]); ?> </td>
+                            <td class="px-6 py-4 text-gray-700"> <?= htmlspecialchars($data["email"]); ?> </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-3 py-1 font-semibold <?= $data['roles'] == 'Admin' ? 'text-red-500' : ($data['roles'] == 'Penumpang' ? 'text-green-500' : 'text-black'); ?>">
                                     <?= ucfirst(htmlspecialchars($data["roles"])); ?>
@@ -84,4 +84,7 @@ if (file_exists('../../layouts/sidebar_admin.php')) {
             </tbody>
         </table>
     </div>
+</div>
+
+<?php require '../../layouts/footer2.php'; ?>
 </div>

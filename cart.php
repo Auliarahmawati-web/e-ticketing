@@ -10,12 +10,12 @@ require 'layouts/navbar.php';
         <div class="overflow-x-auto">
             <form action="" method="POST">
                 <div class="mb-4">
-                    <label for="nama_lengkap" class="block text-sm font-medium text-gray-700">Nama Pemesan</label>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Nama Pemesan</label>
                     <?php if (!isset($_SESSION["id_user"])): ?>
                         <div class="text-red-500">Error: User ID not found in session!</div>
                     <?php endif; ?>
                     <input type="hidden" name="id_user" value="<?= $_SESSION["id_user"] ?? ''; ?>">
-                    <input type="text" value="<?= $_SESSION["nama_lengkap"] ?? ''; ?>" class="w-full px-3 py-2 mt-1 border rounded-lg" disabled>
+                    <input type="text" value="<?= $_SESSION["username"] ?? ''; ?>" class="w-full px-3 py-2 mt-1 border rounded-lg" disabled>
                 </div>
                 
                 <div class="mt-6 relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -27,6 +27,7 @@ require 'layouts/navbar.php';
                                 <th class="px-6 py-3">Rute</th>
                                 <th class="px-6 py-3">Tanggal Berangkat</th>
                                 <th class="px-6 py-3">Waktu Keberangkatan</th>
+                                <th class="px-6 py-3">Kelas</th>
                                 <th class="px-6 py-3 text-right">Harga</th>
                                 <th class="px-6 py-3 text-center">Kuantitas</th>
                                 <th class="px-6 py-3 text-right">Total Harga</th>
@@ -37,7 +38,11 @@ require 'layouts/navbar.php';
                             <?php 
                             $no = 1; 
                             $grandTotal = 0;
-                            foreach ($_SESSION["cart"] as $id_jadwal => $kuantitas) : 
+                            foreach ($_SESSION["cart"] as $id_jadwal => $data) : 
+                                if (!is_array($data)) {
+                                    continue;
+                                }
+                                
                                 $jadwalPenerbangan = query("SELECT * FROM jadwal_penerbangan 
                                     INNER JOIN rute ON rute.id_rute = jadwal_penerbangan.id_rute 
                                     INNER JOIN maskapai ON rute.id_maskapai = maskapai.id_maskapai 
@@ -47,7 +52,13 @@ require 'layouts/navbar.php';
                                     continue;
                                 }
                                 
-                                $totalHarga = $jadwalPenerbangan["harga"] * $kuantitas;
+                                $kelas = $data['kelas'] ?? 'Economy Class';
+                                $kuantitas = $data['quantity'] ?? 1;
+                                
+                                $hargaDasar = $jadwalPenerbangan["harga"];
+                                $hargaKelas = ($kelas == "Business Class" || $kelas == "First Class") ? $hargaDasar * 2 : $hargaDasar;
+                                
+                                $totalHarga = $hargaKelas * $kuantitas;
                                 $grandTotal += $totalHarga;
                             ?>
                                 <tr class="hover:bg-gray-100 text-sm">
@@ -56,7 +67,8 @@ require 'layouts/navbar.php';
                                     <td class="px-6 py-4 text-gray-700"> <?= $jadwalPenerbangan["rute_asal"]; ?> - <?= $jadwalPenerbangan["rute_tujuan"]; ?> </td>
                                     <td class="px-6 py-4 text-center"> <?= $jadwalPenerbangan["tanggal_pergi"]; ?> </td>
                                     <td class="px-6 py-4 text-gray-700"> <?= $jadwalPenerbangan["waktu_berangkat"]; ?> - <?= $jadwalPenerbangan["waktu_tiba"]; ?> </td>
-                                    <td class="px-6 py-4 text-right">Rp <?= number_format($jadwalPenerbangan["harga"]); ?> </td>
+                                    <td class="px-6 py-4 text-center"> <?= $kelas; ?> </td>
+                                    <td class="px-6 py-4 text-right">Rp <?= number_format($hargaKelas); ?> </td>
                                     <td class="px-6 py-4 text-center"> <?= $kuantitas; ?> </td>
                                     <td class="px-6 py-4 text-right">Rp <?= number_format($totalHarga); ?> </td>
                                     <td class="px-6 py-4 text-center">
@@ -67,7 +79,7 @@ require 'layouts/navbar.php';
                                 <?php $no++; ?>
                             <?php endforeach; ?>
                             <tr class="bg-gray-100">
-                                <td class="px-6 py-4 font-semibold" colspan="7">Grand Total</td>
+                                <td class="px-6 py-4 font-semibold" colspan="8">Grand Total</td>
                                 <td class="px-6 py-4 text-right font-semibold">Rp <?= number_format($grandTotal); ?></td>
                                 <td class="px-6 py-4"></td>
                             </tr>

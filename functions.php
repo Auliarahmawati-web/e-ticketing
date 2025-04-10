@@ -16,18 +16,13 @@ function checkout($data){
     global $conn; 
     
     try {
-        // Enable error reporting for debugging
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        
-        // Start transaction
         mysqli_begin_transaction($conn);
         
-        // Validate user ID exists
         if (!isset($data["id_user"]) || empty($data["id_user"])) {
             throw new Exception("User ID is required");
         }
         
-        // Validate cart is not empty
         if (!isset($_SESSION["cart"]) || empty($_SESSION["cart"])) {
             throw new Exception("Cart is empty");
         }
@@ -35,12 +30,10 @@ function checkout($data){
         $idOrder = uniqid();
         $tanggalTransaksi = date('Y-m-d');
         $struk = bin2hex(random_bytes(10));
-        $status = "proses"; // Initial status
+        $status = "proses";
         
-        // Debug log
         error_log("Starting checkout process for order: " . $idOrder);
         
-        // Insert into order_tiket with status
         $queryOrder = "INSERT INTO order_tiket (id_order, tanggal_transaksi, struk, status) 
                       VALUES ('$idOrder', '$tanggalTransaksi', '$struk', '$status')";
         $resultOrder = mysqli_query($conn, $queryOrder);
@@ -51,11 +44,16 @@ function checkout($data){
         
         error_log("Successfully created order_tiket record");
 
-        // Process each item in cart
-        foreach($_SESSION["cart"] as $id_jadwal => $kuantitas) {
-            error_log("Processing cart item - Jadwal ID: $id_jadwal, Quantity: $kuantitas");
+        foreach($_SESSION["cart"] as $id_jadwal => $details) {
+            $kuantitas = $details['quantity'];
+            $kelas = $details['kelas']; // Enum class: First Class, Business Class, Economy Class
             
-            // Get ticket details
+            if (!in_array($kelas, ['First Class', 'Business Class', 'Economy Class'])) {
+                throw new Exception("Invalid ticket class selected");
+            }
+            
+            error_log("Processing cart item - Jadwal ID: $id_jadwal, Quantity: $kuantitas, Class: $kelas");
+            
             $tiket = query("SELECT * FROM jadwal_penerbangan 
                           INNER JOIN rute ON rute.id_rute = jadwal_penerbangan.id_rute 
                           INNER JOIN maskapai ON rute.id_maskapai = maskapai.id_maskapai 
@@ -74,13 +72,12 @@ function checkout($data){
                 throw new Exception("Not enough seats available for ticket ID: " . $id_jadwal);
             }
 
-            error_log("Inserting order_detail - User: $id_user, Jadwal: $id_jadwal, Order: $idOrder");
+            error_log("Inserting order_detail - User: $id_user, Jadwal: $id_jadwal, Order: $idOrder, Class: $kelas");
             
-            // Insert into order_detail (using id_jadwal as id_penerbangan)
             $queryOrderDetail = "INSERT INTO order_detail 
-                               (id_user, id_penerbangan, id_order, jumlah_tiket, total_harga) 
+                               (id_user, id_penerbangan, id_order, jumlah_tiket, total_harga, kelas) 
                                VALUES 
-                               ('$id_user', '$id_jadwal', '$idOrder', '$kuantitas', '$totalHarga')";
+                               ('$id_user', '$id_jadwal', '$idOrder', '$kuantitas', '$totalHarga', '$kelas')";
             
             $resultOrderDetail = mysqli_query($conn, $queryOrderDetail);
             
@@ -90,7 +87,6 @@ function checkout($data){
 
             error_log("Successfully inserted order_detail record");
 
-            // Update seat capacity
             $updateKapasitas = mysqli_query($conn, "UPDATE jadwal_penerbangan 
                                                   SET kapasitas_kursi = '$sisaKapasitas' 
                                                   WHERE id_jadwal = '$id_jadwal'");
@@ -102,17 +98,13 @@ function checkout($data){
             error_log("Successfully updated seat capacity");
         }
         
-        // If we get here, everything succeeded. Commit the transaction
         mysqli_commit($conn);
         error_log("Transaction committed successfully");
-        
-        // Clear the cart
         unset($_SESSION["cart"]);
         
         return true;
         
     } catch (Exception $e) {
-        // Something went wrong, rollback the transaction
         mysqli_rollback($conn);
         error_log("Checkout Error: " . $e->getMessage());
         error_log("SQL Error: " . mysqli_error($conn));

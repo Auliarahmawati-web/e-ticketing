@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'functions.php';
-require '../../layouts/sidebar_admin.php';
+require '../../layouts/sidebar_petugas.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['username']) || $_SESSION['roles'] !== 'Admin') {
@@ -180,7 +180,4 @@ ORDER BY ot.tanggal_transaksi DESC");
             <?php endif; ?>
         </tbody>
     </table>
-</div>
-
-<?php require '../../layouts/footer2.php'; ?>
 </div>

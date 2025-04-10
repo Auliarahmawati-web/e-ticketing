@@ -19,9 +19,10 @@
             </div>
             
             <label for="password" class="block text-gray-600">Password</label>
-            <div class="flex items-center border rounded-lg px-3 py-2 mb-3">
+            <div class="flex items-center border rounded-lg px-3 py-2 mb-3 relative">
                 <i class="bi bi-lock text-gray-500"></i>
                 <input type="password" name="password" id="password" class="w-full ml-2 outline-none" placeholder="Enter your password" required>
+                <i class="bi bi-eye-slash text-gray-500 cursor-pointer ml-2 absolute right-3" id="togglePassword" onclick="togglePassword()"></i>
             </div>
             
             <button type="submit" name="login" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
@@ -33,5 +34,23 @@
             <p class="text-gray-600">Belum punya akun? <a href="../register/index.php" class="text-blue-600 hover:underline">Daftar di sini</a></p>
         </div>
     </div>
+
+    <script>
+        // Fungsi untuk menampilkan atau menyembunyikan password
+        function togglePassword() {
+            var passwordInput = document.getElementById("password");
+            var toggleIcon = document.getElementById("togglePassword");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text"; // Tampilkan password
+                toggleIcon.classList.remove("bi-eye-slash");
+                toggleIcon.classList.add("bi-eye");
+            } else {
+                passwordInput.type = "password"; // Sembunyikan password
+                toggleIcon.classList.remove("bi-eye");
+                toggleIcon.classList.add("bi-eye-slash");
+            }
+        }
+    </script>
 </body>
 </html>

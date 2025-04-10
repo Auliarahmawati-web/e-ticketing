@@ -57,7 +57,7 @@ $persen_verifikasi = ($tiket_terjual > 0) ? ($jumlah_verifikasi / $tiket_terjual
         </div>
         <div class="flex-1 p-8 bg-white min-h-screen">
     <h1 class="text-2xl font-bold text-gray-900 text-center">
-        Halo, <?php echo $_SESSION['nama_lengkap'] ?? 'Guest'; ?>
+        Halo, <?php echo $_SESSION['email'] ?? 'Guest'; ?>
     </h1>
     <p class="text-gray-600 text-center mt-2 text-lg italic">
         Kelola data tiket pesawat Anda dengan sidebar yang modern dan intuitif  
@@ -184,3 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 </body>
+
+
+

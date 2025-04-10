@@ -90,11 +90,14 @@ ORDER BY ot.tanggal_transaksi DESC");
                                 <?= ucfirst($transaction['status'] === 'proses' ? 'Tiket dalam proses' : 'Tiket terverifikasi'); ?>
                             </span>
                             <td class="px-6 py-4 text-center">
-                            <a href="cetak.php?id_order=<?= $transaction['id_order']; ?>" 
-                            class="px-3 py-1 text-white bg-blue-500 hover:bg-blue-600 rounded text-sm">
-                            Cetak
-                            </a>
+                            <?php if ($transaction['status'] === 'terverifikasi'): ?>
+                                <a href="cetak.php?id_order=<?= $transaction['id_order']; ?>" 
+                                class="px-3 py-1 text-white bg-blue-500 hover:bg-blue-600 rounded text-sm">
+                                Cetak
+                                </a>
+                            <?php endif; ?>
                         </td>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

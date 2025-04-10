@@ -1,12 +1,12 @@
 <?php
 require '../../koneksi.php';
 
-$nama_lengkap = $_POST['nama_lengkap'];
+$nama_lengkap = $_POST['email'];
 $username = $_POST['username'];
 $password = $_POST['password'];
-$roles = $_POST['roles'];
+$roles = 'penumpang';
 
-$query = mysqli_query($conn, "INSERT INTO user (nama_lengkap, username, password, roles) VALUES ('$nama_lengkap', '$username', '$password', '$roles')");
+$query = mysqli_query($conn, "INSERT INTO user (email, username, password, roles) VALUES ('$nama_lengkap', '$username', '$password', '$roles')");
 
 if($query) {
     echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location='../login/index.php';</script>";

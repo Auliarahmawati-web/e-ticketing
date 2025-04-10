@@ -21,11 +21,11 @@ function tambah($data){
 
     global $conn;
     $username = htmlspecialchars($data["username"]);
-    $nama_lengkap = htmlspecialchars($data["nama_lengkap"]);
+    $email = htmlspecialchars($data["email"]);
     $password = htmlspecialchars($data["password"]);
     $roles = htmlspecialchars($data["roles"]);
 
-    $query = "INSERT INTO user VALUES (NULL, '$username', '$nama_lengkap', '$password', '$roles')";
+    $query = "INSERT INTO user VALUES (NULL, '$username', '$email', '$password', '$roles')";
     mysqli_query($conn, $query);
 
     return mysqli_affected_rows($conn);
@@ -42,13 +42,13 @@ function edit($data){
     
     $id = htmlspecialchars($data["id_user"]);
     $username = htmlspecialchars($data["username"]);
-    $nama_lengkap = htmlspecialchars($data["nama_lengkap"]);
+    $email = htmlspecialchars($data["email"]);
     $password = htmlspecialchars($data["password"]);
     $roles = htmlspecialchars($data["roles"]);
 
     $query = "UPDATE user SET
     username = '$username',
-    nama_lengkap = '$nama_lengkap',
+    email = '$email',
     password = '$password',
     roles = '$roles' WHERE id_user = '$id'";
 

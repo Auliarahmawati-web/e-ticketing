@@ -24,7 +24,7 @@ $maskapai = query($query);
 <?php require '../../layouts/sidebar_admin.php'; ?>
 
 <div class="p-6 bg-white lg:ml-64 overflow-x-auto">
-    <h1 class="text-2xl font-bold mb-4">Halo, <?= $_SESSION["nama_lengkap"]; ?></h1>
+    <h1 class="text-2xl font-bold mb-4">Halo, <?= $_SESSION["email"]; ?></h1>
     <h2 class="text-xl font-semibold mb-6">Halaman Maskapai</h2>
 
     <div class="flex mb-4">
@@ -69,4 +69,7 @@ $maskapai = query($query);
             </tbody>
         </table>
     </div>
+</div>
+
+<?php require '../../layouts/footer2.php'; ?>
 </div>

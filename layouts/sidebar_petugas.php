@@ -15,26 +15,17 @@
 
     </div>
     <div class="flex flex-col space-y-2">
-        <a href="/e-ticketing/admin/index.php" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-house-door"></i><span>Dashboard</span>
+        <a href="/e-ticketing/petugas/konfirmasi.php/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
+            <i class="bi bi-house-door"></i><span>Konfirmasi Pembayaran</span>
         </a>
-        <a href="/e-ticketing/admin/pengguna/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-person-lines-fill"></i><span>Data Pengguna</span>
+        <a href="/e-ticketing/petugas/pengguna/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
+            <i class="bi bi-person-lines-fill"></i><span>Cetak Tiket</span>
         </a>
         <a href="/e-ticketing/admin/maskapai/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-airplane"></i><span>Data Maskapai</span>
+            <i class="bi bi-airplane"></i><span>Data Jadwal</span>
         </a>
         <a href="/e-ticketing/admin/kota/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-geo-alt"></i><span>Data Kota</span>
-        </a>
-        <a href="/e-ticketing/admin/rute/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-map"></i><span>Data Rute</span>
-        </a>
-        <a href="/e-ticketing/admin/jadwal/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-calendar-check"></i><span>Data Jadwal Penerbangan</span>
-        </a>
-        <a href="/e-ticketing/admin/order/" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300">
-            <i class="bi bi-ticket-perforated"></i><span>Pemesanan Tiket</span>
+            <i class="bi bi-geo-alt"></i><span>History Pembayaran </span>
         </a>
         <a href="/e-ticketing/auth/login/index.php" class="flex items-center space-x-2 py-2 px-4 rounded hover:bg-gray-300"
            onclick="return confirm('Apakah Anda yakin ingin logout?')">
